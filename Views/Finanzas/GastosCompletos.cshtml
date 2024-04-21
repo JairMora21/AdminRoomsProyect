@@ -1,0 +1,438 @@
+﻿<style>
+    .wrapper-opc {
+        margin: 35px 1px 35px 35px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 20px;
+    }
+
+    .wrapper-cuartos {
+        margin: 35px 35px 35px 1px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 20px;
+    }
+
+    .wrapper-opc div a {
+        cursor: pointer;
+    }
+
+    .menu-opc a {
+        color: black !important;
+        text-decoration: none !important;
+        font-size: 18px !important;
+        transition: color 0.3s !important;
+        cursor: pointer;
+    }
+
+    .menu-opc a {
+        color: black;
+        text-decoration: none;
+        position: relative;
+        transition: color 0.3s;
+    }
+
+        /* Animación de la barra de menú */
+        .menu-opc a::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 50%;
+            background-color: #2196f3;
+            transition: all 0.1s;
+            opacity: 0;
+        }
+
+        .menu-opc a.active::before {
+            opacity: 1;
+        }
+
+        .menu-opc a.active {
+            padding-left: 15px;
+        }
+
+    .table-facturas {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        margin: 30px;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #333;
+        color: white;
+    }
+
+    .etiqueta-verde {
+        background-color: #4CAF50;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .etiqueta-roja {
+        background-color: #f44336;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .modal-content-config {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+
+    label {
+        margin-right: 7px; /* Espaciado entre las etiquetas y los inputs */
+    }
+
+    input[type="date"] {
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 7px;
+    }
+
+    .folio-btn {
+        padding: 6px 16px;
+        background-color: #007bff; /* Color del botón */
+        color: #fff; /* Color del texto del botón */
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .balance-amount {
+        font-size: 20px;
+        margin-bottom: 5px; /* Añade un pequeño espacio inferior */
+        margin-left: 50px;
+        font-weight: bold;
+    }
+
+    .color-bal {
+        color: #28a745; /* Color verde, puedes ajustarlo según tus preferencias */
+    }
+
+    .card-header {
+        font-weight: bold;
+    }
+
+    .mr-icon {
+        margin-right: 5px;
+    }
+
+    .etiqueta-fijo {
+        background-color: rgba(40, 167, 69, 0.7);
+        color: #fff;
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    .etiqueta-semi {
+        background-color: rgba(255, 193, 7, 0.7);
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 4px;
+        color: #fff;
+    }
+
+    .etiqueta-variable {
+        background-color: rgba(0, 123, 255, 0.7);
+        color: #fff;
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    .etiqueta-default {
+        background-color: rgba(204, 204, 204, 0.7);
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+
+    
+
+</style>
+
+@{
+    ViewData["Title"] = "Gastos";
+}
+
+@functions {
+    public string FormatoFecha(DateTime? fecha)
+    {
+        return fecha?.ToString("dd-MM-yyyy");
+    }
+}
+
+<body class="fondo">
+
+    <div class="row">
+        <div class="col-2">
+            <div class="wrapper-opc menu-opc">
+                <div class="col-item mt-2">
+                    @Html.ActionLink("Asignaciones", "Index", "Finanzas", null, new {@class= ""})
+                </div>
+                <div class="col-item mt-2">
+                    @Html.ActionLink("Gastos", "Gastos", "Finanzas", null, new {@class= ""})
+                </div>
+                <div class="col-item mt-2">
+                    <a id="opc-facturas" class="active">Finanzas</a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-10">
+            <div class="wrapper-cuartos">
+                <div class="row">
+
+                    <nav class="nav nav-pills nav-justified border mb-3">
+                        <a class="nav-link" href="Facturas">Ingresos</a>
+                        <a class="nav-link active" aria-current="page" href="#">Egresos</a>
+                    </nav>
+
+                    <div class="d-flex justify-content">
+                        @using (Html.BeginForm(null, null, FormMethod.Get, new { @class = "mb-3" }))
+                        {
+
+                            <div class="justify-content">
+                                <label for="fecha_inicial"><strong>Del:</strong></label>
+                                <input type="date" id="fecha_inicial" name="fecha_inicial" value="@ViewData["FechaInicial"]">
+                                <label for="fecha_final"><strong>al:</strong></label>
+                                <input type="date" id="fecha_final" name="fecha_final" value="@ViewData["FechaFinal"]">
+                                <button type="submit" class="folio-btn">Buscar</button>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="row mt-2 mb-4">
+                        <div class="col-sm-6">
+
+                            <div class="card">
+                                <div class="card-header">Grafica de estadisticas</div>
+                                <div class="card-body">
+                                    <canvas id="chartStats" style="max-height:250px"></canvas>
+                                    <p class="balance-amount">Balance: <span class="color-bal">$@ViewBag.Diferencia</span></p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="card">
+                                <div class="card-header">Grafica de Gastos</div>
+                                <div class="card-body">
+                                    <canvas id="chartBill" style="max-height:250px"></canvas>
+                                    <p></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <table class="table-facturas mx-auto " id="DataTable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo gasto</th>
+                                <th>Monto</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var gasto in ViewBag.Gasto)
+                            {
+                                <tr>
+                                    <td>@gasto.Nombre</td>
+                                    <td>
+                                        @switch (gasto.IdTipoGastoNavigation.IdTipoGasto)
+                                        {
+                                            case 1:
+                                                <span class="etiqueta-fijo">@gasto.IdTipoGastoNavigation.Nombre</span>
+                                                break;
+                                            case 2:
+                                                <span class="etiqueta-semi">@gasto.IdTipoGastoNavigation.Nombre</span>
+                                                break;
+                                            case 3:
+                                                <span class="etiqueta-variable">@gasto.IdTipoGastoNavigation.Nombre</span>
+                                                break;
+                                            default:
+                                                <span class="etiqueta-default">Not Found</span>
+                                                break;
+                                        }
+                                    </td>
+
+                                    <td>$@gasto.Monto</td>
+                                    <td>@FormatoFecha(gasto.Fecha)</td>
+
+                                    <td>
+                                        <a href="@Url.Action("EditGastoCompleto", "Finanzas", new {id = gasto.IdGasto})" class="btn btn-labeled btn-primary">
+                                            <span class="btn-label"><i class="fa-solid fa-pen-to-square mr-icon"></i></span>Editar
+                                        </a>
+                                        <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@gasto.IdGasto">
+                                            <span class="btn-label"><i class="fa fa-trash mr-icon"></i></span>Eliminar
+                                        </button>
+
+                                        @using (Html.BeginForm("DeleteGastoCompleto", "Finanzas", FormMethod.Post, new { @class = "custom-form" }))
+                                        {
+                                            <div class="modal fade" id="deleteModal-@gasto.IdGasto" tabindex="-1" aria-labelledby="deleteModalLabel-@gasto.IdGasto" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                    <div class="modal-content-config my-custom-background rounded">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel-@gasto.IdGasto"><strong>Eliminar gasto</strong></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body mb-3">
+                                                            <h5>¿Estás seguro que quieres eliminar este gasto?</h5>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                            <input type="hidden" name="id" value="@gasto.IdGasto" />
+                                                            <button type="submit" class="btn btn-primary mouse">Eliminar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#DataTable").DataTable();
+            EstadisticasPorFecha();
+            EstadisticasGastos();
+        });
+
+        function EstadisticasPorFecha() {
+            fetch("/Finanzas/GraficaFecha")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+                    const labels = dataJson.map((item) => { return item.tipo });
+                    const values = dataJson.map((item) => { return item.cantidad });
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'cantidad',
+                            data: values,
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 99, 132)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },
+                    };
+
+                    const canvasBarras = document.getElementById("chartStats");
+
+                    const graficoBarras = new Chart(canvasBarras, config);
+                })
+                .catch((error) => {
+                    console.error('Error en la solicitud:', error);
+                });
+        }
+
+        function EstadisticasGastos() {
+            fetch("/Finanzas/GraficaGastos")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+                    const labels = dataJson.map((item) => { return item.tipo });
+                    const values = dataJson.map((item) => { return item.cantidad });
+
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: values,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    };
+
+                    const config = {
+                        type: 'doughnut',
+                        data: data,
+                    };
+
+                    const canvasDonut = document.getElementById("chartBill");
+
+                    const graficaDonut = new Chart(canvasDonut, config);
+                })
+                .catch((error) => {
+                    console.error('Error en la solicitud:', error);
+                });
+        }
+    </script>
+}

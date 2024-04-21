@@ -1,0 +1,138 @@
+﻿@model IEnumerable<Casa>
+<style>
+    .wrapper-clientes {
+        margin: 35px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        max-height: 820px;
+        padding: 20px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #333;
+        color: white;
+    }
+
+    .mr-icon {
+        margin-right: 4px;
+    }
+
+    .my-custom-background {
+        background-color: #fff; /* Color de fondo personalizado */
+    }
+
+    .modal-content-config {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+    .mr-icon{
+        margin-right: 5px;
+    }
+</style>
+
+@{
+    ViewData["Title"] = "Residencia";
+}
+
+<body class="fondo">
+    <div class="wrapper-clientes">
+        <h1>Residencias</h1>
+        <hr />
+        <div class="">
+            <a href="@Url.Action("AddHome", "Residencias", null)" class="btn btn-primary mb-2">
+                <span class="btn-label"><i class="fa-solid fa-circle-plus mr-icon"></i></span>Agregar residencia 
+            </a>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="10%">Nombre</th>
+                        <th>Direccion</th>
+                        <th width="10%">No. Cuartos</th>
+                        <th width="30%">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var res in Model)
+                        {
+                            <tr>
+                                <td>@res.Nombre</td>
+                                <td>@res.Direccion</td>
+                                <td>@res.NumeroCuartos</td>
+                                <td>
+                                    @using (Html.BeginForm("Delete", "Residencias", FormMethod.Post, new { @class = "custom-form" }))
+                                    {
+
+
+
+                                        <a href="@Url.Action("EditHome", "Residencias", new {id = res.IdCasa})" class="btn btn-labeled btn-primary">
+                                            <span class="btn-label"><i class="fa-solid fa-pen-to-square mr-icon"></i></span>Editar
+                                        </a>
+
+                                        <button type="button" class="btn btn-labeled btn-success">
+                                            <span class="btn-label"><i class="fa fa-refresh mr-icon"></i></span>Cambiar
+                                        </button>
+
+
+                                        <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#usuarioModal-@res.IdCasa">
+                                            <span class="btn-label"><i class="fa fa-trash mr-icon"></i></span>Eliminar
+                                        </button>
+
+                                        <div class="modal fade" id="usuarioModal-@res.IdCasa" tabindex="-1" aria-labelledby="usuarioModalLabel-@res.IdCasa" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                <div class="modal-content-config my-custom-background rounded">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="usuarioModalLabel-@res.IdCasa"><strong>Eliminar Usuario</strong></h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body mb-3">
+                                                        <h5>¿Estás seguro que quieres eliminar la casa <strong>@res.Nombre</strong>?</h5>
+                                                        <p>Se eliminaran todos los huespedes y asignaciones</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                        <input type="hidden" name="id" value="@res.IdCasa" />
+                                                        <button type="submit" class="btn btn-primary mouse">Eliminar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                      
+
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

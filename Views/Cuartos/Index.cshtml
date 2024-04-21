@@ -1,0 +1,566 @@
+﻿@model IEnumerable<Cuarto>
+
+<style>
+    .wrapper-opc {
+        margin: 35px 1px 35px 35px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 20px;
+    }
+
+    .wrapper-cuartos {
+        margin: 35px 35px 35px 1px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 20px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #333;
+        color: white;
+    }
+
+    .mr-icon {
+        margin-right: 4px;
+    }
+
+    .modal-content-config {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+    .modal-content-config-asignar {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+        width: 50vh;
+    }
+
+    .wrapper-opc div a {
+        cursor: pointer;
+    }
+
+    .menu-opc a {
+        color: black !important;
+        text-decoration: none !important;
+        font-size: 18px !important;
+        transition: color 0.3s !important;
+        cursor: pointer;
+    }
+
+    .menu-opc a {
+        color: black;
+        text-decoration: none;
+        position: relative;
+        transition: color 0.3s;
+    }
+
+        /* Animación de la barra de menú */
+        .menu-opc a::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 50%;
+            background-color: #2196f3;
+            transition: all 0.1s;
+            opacity: 0;
+        }
+
+        .menu-opc a.active::before {
+            opacity: 1;
+        }
+
+        .menu-opc a.active {
+            padding-left: 15px;
+        }
+
+    .etiqueta-verde {
+        background-color: #4CAF50;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .etiqueta-roja {
+        background-color: #f44336;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .btn-edit {
+        background: #008788
+    }
+
+    .btn-see {
+        background: #005af5
+    }
+
+    .mr-form {
+        margin-right: 10px;
+    }
+
+</style>
+
+@{
+    ViewData["Title"] = "Cuartos";
+}
+<body class="fondo">
+    <div class="row">
+        <div class="col-2">
+            <div class="wrapper-opc menu-opc">
+                <div class="col-item mt-2">
+                    <a id="opc-todos" class="active">Todos</a>
+                </div>
+                <div class="col-item mt-2">
+                    <a id="opc-disponibles">Disponibles</a>
+                </div>
+                <div class="col-item mt-2">
+                    <a id="opc-ocupados">Ocupados</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-10">
+            <div class="wrapper-cuartos">
+
+                @*Cuartos todos *@
+                <div id="cuartos-todos">
+                    <h4>Cuartos </h4>
+                    <hr />
+                    <div class="col-item mb-3">
+                        <a href="@Url.Action("AddRoom", "Cuartos", null)" class="btn btn-primary">
+                            <span class="btn-label"><i class="fa-solid fa-circle-plus mr-icon"></i></span>Agregar
+                        </a>
+                    </div>
+
+                    <div class="col-item">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="5%">No.Cuarto</th>
+                                    <th width="15%">Huesped</th>
+                                    <th width="10%">Costo</th>
+                                    <th width="10%">Disponibilidad</th>
+                                    <th width="20%">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var cuarto in ViewBag.CuartosTodos)
+                                    {
+                                        <tr>
+                                            <td>@cuarto.NumeroCuarto</td>
+                                            <td>
+                                                @if (@cuarto.IdHuespedNavigation != null)
+                                                {
+                                                    @string.Concat(cuarto.IdHuespedNavigation.Nombre, " ", cuarto.IdHuespedNavigation.Apellido)
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                            </td>
+
+                                            <td>$@cuarto.Costo</td>
+                                            <td>
+                                                @if (@cuarto.Disponibilidad == true)
+                                                {
+                                                    <span class="etiqueta-verde">Disponible</span>
+
+                                                }
+                                                else
+                                                {
+                                                    <span class="etiqueta-roja">Ocupado</span>
+
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content align-items-center">
+                                                    @*Asignar cuartos*@
+                                                    @using (Html.BeginForm("AsingarHuesped", "Cuartos", FormMethod.Post, new { @class = "custom-form " }))
+                                                    {
+
+                                                        @if (cuarto.Disponibilidad == true)
+                                                        {
+                                                            <button type="button" class="btn btn-labeled btn-success" data-bs-toggle="modal" data-bs-target="#AsignarModal-@cuarto.IdCuarto">
+                                                                <span class="btn-label"><i class="fa-solid fa-user-plus"></i></span>Asignar
+                                                            </button>
+
+                                                            <div class="modal fade" id="AsignarModal-@cuarto.IdCuarto" tabindex="-1" aria-labelledby="AsignarModal-@cuarto.IdCuarto" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                                    <div class="modal-content-config-asignar my-custom-background rounded">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="AsignarModal-@cuarto.IdCuarto"><strong>Asignar Huesped</strong></h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body mb-3">
+                                                                            <select class="form-control" name="idHuesped">
+                                                                                <option value="">Seleccione un huésped</option>
+                                                                                @foreach (var huesped in ViewBag.Huespeds)
+                                                                                {
+                                                                                    <option value="@huesped.IdHuesped">@string.Concat(huesped.Nombre, ' ', huesped.Apellido)</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                            <input type="hidden" name="idCuarto" value="@cuarto.IdCuarto" />
+                                                                            <button type="submit" class="btn btn-primary mouse">Asignar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    @*Quitar asignaciones de cuartos*@
+                                                    @using (Html.BeginForm("DeleteUserFromRoom", "Cuartos", FormMethod.Post, new { @class = "custom-form mr-form " }))
+                                                    {
+                                                        if (cuarto.Disponibilidad == false)
+                                                        {
+                                                            <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#LiberarModal-@cuarto.IdCuarto">
+                                                                <span class="btn-label"><i class="fa-solid fa-user-xmark mr-icon"></i></span>Liberar
+                                                            </button>
+
+                                                            <div class="modal fade" id="LiberarModal-@cuarto.IdCuarto" tabindex="-1" aria-labelledby="LiberarModalLabel-@cuarto.IdCuarto" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                                    <div class="modal-content-config my-custom-background rounded">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="LiberarModalLabel-@cuarto.IdCuarto"><strong>Eliminar Usuario</strong></h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body mb-3">
+
+                                                                            <h5>¿Quieres liberar a <strong>@(cuarto.IdHuespedNavigation?.Nombre ?? "Nombre no disponible")</strong> de este cuarto?</h5>
+                                                                            <p>Se borraran todas las asignaciones del usuario con este cuarto</p>
+
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                            <input type="hidden" name="idCuarto" value="@cuarto.IdCuarto" />
+                                                                            <input type="hidden" name="idHuesped" value="@((cuarto.IdHuespedNavigation?.IdHuesped) ?? 0)" />
+                                                                            <input type="hidden" name="idAsignacion" value="@cuarto.IdAsignacion" />
+                                                                            <button type="submit" class="btn btn-primary mouse">Liberar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        }
+
+
+                                                    }
+                                                    <a href="@Url.Action("EditRoom", "Cuartos", new {id = cuarto.IdCuarto})" class="btn btn-labeled btn-primary mr-form">
+                                                        <span class="btn-label"><i class="fa-solid fa-pen-to-square mr-icon"></i></span>Editar
+                                                    </a>
+                                                    @*Eliminar cuarto*@
+                                                    @using (Html.BeginForm("Delete", "Cuartos", FormMethod.Post, new { @class = "custom-form" }))
+                                                    {
+                                                        @if (cuarto.Disponibilidad == true)
+                                                        {
+                                                            <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@cuarto.IdCuarto">
+                                                                <span class="btn-label"><i class="fa fa-trash mr-icon"></i></span>Eliminar
+                                                            </button>
+
+                                                            <div class="modal fade" id="deleteModal-@cuarto.IdCuarto" tabindex="-1" aria-labelledby="deleteModal-@cuarto.IdCuarto" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                                    <div class="modal-content-config my-custom-background rounded">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="deleteModal-@cuarto.IdCuarto"><strong>Asignat Huesped</strong></h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body mb-3">
+                                                                            <h5>¿Estás seguro que quieres eliminar el cuarto <strong>@cuarto.NumeroCuarto</strong>?</h5>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                            <input type="hidden" name="idCuarto" value="@cuarto.IdCuarto" />
+                                                                            <button type="submit" class="btn btn-primary mouse">Eliminar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                @*Cuartos disponibles *@
+                <div id="cuartos-disponibles">
+                    <h4>Cuartos </h4>
+                    <hr />
+                    <div class="col-item mb-3">
+                        <a href="@Url.Action("AddRoom", "Cuartos", null)" class="btn btn-primary">
+                            <span class="btn-label"><i class="fa-solid fa-circle-plus mr-icon"></i></span>Agregar
+                        </a>
+                    </div>
+                    <div class="col-item">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="5%">No. Cuarto</th>
+                                    <th width="15%">Huesped</th>
+                                    <th width="10%">Costo</th>
+                                    <th width="10%">Disponibilidad</th>
+                                    <th width="20%">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var cuarto in ViewBag.CuartosDisponibles)
+                                    {
+                                        <tr>
+                                            <td>@cuarto.NumeroCuarto</td>
+                                            <td>
+                                                @if (@cuarto.IdHuespedNavigation != null)
+                                                {
+                                                    @string.Concat(cuarto.IdHuespedNavigation.Nombre, " ", cuarto.IdHuespedNavigation.Apellido)
+
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                            </td>
+
+                                            <td>$@cuarto.Costo</td>
+                                            <td>
+                                                @if (@cuarto.Disponibilidad == true)
+                                                {
+                                                    <span class="etiqueta-verde">Disponible</span>
+
+                                                }
+                                                else
+                                                {
+                                                    <span class="etiqueta-roja">Ocupado</span>
+
+                                                }
+                                            </td>
+                                            <td>
+                                                @*Asignar cuartos*@
+                                                @using (Html.BeginForm("AsingarHuesped", "Cuartos", FormMethod.Post, new { @class = "custom-form" }))
+                                                {
+                                                    @if (cuarto.Disponibilidad == true)
+                                                    {
+                                                        <button type="button" class="btn btn-labeled btn-success" data-bs-toggle="modal" data-bs-target="#DisAsignarModal-@cuarto.IdCuarto">
+                                                            <span class="btn-label"><i class="fa-solid fa-user-plus"></i></span>Asignar
+                                                        </button>
+
+                                                        <a href="@Url.Action("EditRoom", "Cuartos", new {id = cuarto.IdCuarto})" class="btn btn-labeled btn-primary">
+                                                            <span class="btn-label"><i class="fa-solid fa-pen-to-square mr-icon"></i></span>Editar
+                                                        </a>
+
+                                                        <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModalDis-@cuarto.IdCuarto">
+                                                            <span class="btn-label"><i class="fa fa-trash mr-icon"></i></span>Eliminar
+                                                        </button>
+
+                                                        <div class="modal fade" id="DisAsignarModal-@cuarto.IdCuarto" tabindex="-1" aria-labelledby="DisAsignarModal-@cuarto.IdCuarto" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                                <div class="modal-content-config-asignar my-custom-background rounded">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="DisAsignarModal-@cuarto.IdCuarto"><strong>Asignar Huesped</strong></h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body mb-3">
+                                                                        <select class="form-control" name="idHuesped">
+                                                                            <option value="">Seleccione un huésped</option>
+                                                                            @foreach (var huesped in ViewBag.Huespeds)
+                                                                            {
+                                                                                <option value="@huesped.IdHuesped">@string.Concat(huesped.Nombre, ' ', huesped.Apellido)</option>
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                        <input type="hidden" name="idCuarto" value="@cuarto.IdCuarto" />
+                                                                        <button type="submit" class="btn btn-primary mouse">Asignar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                @using (Html.BeginForm("Delete", "Cuartos", FormMethod.Post, new { @class = "custom-form" }))
+                                                {
+                                                    @if (cuarto.Disponibilidad == true)
+                                                    {
+                                                        <div class="modal fade" id="deleteModalDis-@cuarto.IdCuarto" tabindex="-1" aria-labelledby="deleteModalDis-@cuarto.IdCuarto" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                                <div class="modal-content-config my-custom-background rounded">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="deleteModalDis-@cuarto.IdCuarto"><strong>Asignat Huesped</strong></h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body mb-3">
+                                                                        <h5>¿Estás seguro que quieres eliminar el cuarto <strong>@cuarto.NumeroCuarto</strong>?</h5>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                        <input type="hidden" name="idCuarto" value="@cuarto.IdCuarto" />
+                                                                        <button type="submit" class="btn btn-primary mouse">Eliminar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                @*Cuartos ocupados *@
+                <div id="cuartos-ocupados">
+                    <h4>Cuartos </h4>
+                    <hr />
+                    <div class="col-item mb-3">
+                        <a href="@Url.Action("AddRoom", "Cuartos", null)" class="btn btn-primary">
+                            <span class="btn-label"><i class="fa-solid fa-circle-plus mr-icon"></i></span>Agregar
+                        </a>
+                    </div>
+                    <div class="col-item">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="5%">No. Cuarto</th>
+                                    <th width="15%">Huesped</th>
+                                    <th width="10%">Costo</th>
+                                    <th width="10%">Disponibilidad</th>
+                                    <th width="20%">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var cuarto in ViewBag.CuartosOcupados)
+                                    {
+                                        <tr>
+                                            <td>@cuarto.NumeroCuarto</td>
+                                            <td>
+                                                @if (@cuarto.IdHuespedNavigation != null)
+                                                {
+                                                    @string.Concat(cuarto.IdHuespedNavigation.Nombre, " ", cuarto.IdHuespedNavigation.Apellido)
+
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                            </td>
+
+                                            <td>$@cuarto.Costo</td>
+                                            <td>
+                                                @if (@cuarto.Disponibilidad == true)
+                                                {
+                                                    <span class="etiqueta-verde">Disponible</span>
+
+                                                }
+                                                else
+                                                {
+                                                    <span class="etiqueta-roja">Ocupado</span>
+
+                                                }
+                                            </td>
+                                            <td>
+                                                @*Quitar asignaciones de cuartos*@
+                                                @using (Html.BeginForm("DeleteUserFromRoom", "Cuartos", FormMethod.Post, new { @class = "custom-form" }))
+                                                {
+                                                    if (cuarto.Disponibilidad == false)
+                                                    {
+                                                        <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#LibLiberarModal-@cuarto.IdCuarto">
+                                                            <span class="btn-label"><i class="fa-solid fa-user-xmark mr-icon"></i></span>Liberar
+                                                        </button>
+
+                                                        <a href="@Url.Action("EditRoom", "Cuartos", new {id = cuarto.IdCuarto})" class="btn btn-labeled btn-primary">
+                                                            <span class="btn-label"><i class="fa-solid fa-pen-to-square mr-icon"></i></span>Editar
+                                                        </a>
+
+                                                        <div class="modal fade" id="LibLiberarModal-@cuarto.IdCuarto" tabindex="-1" aria-labelledby="LibLiberarModalLabel-@cuarto.IdCuarto" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                                <div class="modal-content-config my-custom-background rounded">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="LibLiberarModalLabel-@cuarto.IdCuarto"><strong>Eliminar Usuario</strong></h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body mb-3">
+
+                                                                        <h5>¿Quieres liberar a <strong>@(cuarto.IdHuespedNavigation?.Nombre ?? "Nombre no disponible")</strong> de este cuarto?</h5>
+                                                                        <p>No hay vuelta atras</p>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                        <input type="hidden" name="idCuarto" value="@cuarto.IdCuarto" />
+                                                                        <input type="hidden" name="idHuesped" value="@((cuarto.IdHuespedNavigation?.IdHuesped) ?? 0)" />
+                                                                        <button type="submit" class="btn btn-primary mouse">Liberar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+

@@ -1,0 +1,135 @@
+﻿@model AdminRooms.Models.ViewModel.HuespedViewModel
+
+@{
+    ViewData["Title"] = "Agregar Huespedes";
+}
+
+
+<style>
+    .wrapper-edit {
+        margin: 60px auto;
+        background-color: rgba(255, 255, 255, 1);
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        max-width: 1000px;
+    }
+
+    .form-edit {
+        padding: 10px 20px 20px 20px;
+        width: 50%;
+    }
+
+    .form-group-edit {
+        margin-bottom: 10px;
+    }
+
+
+
+    .input-text-edit {
+        width: 100%;
+    }
+
+    .form-horizontal.login label {
+        font-weight: bold;
+    }
+
+</style>
+<body class="fondo">
+    <div class="wrapper-edit">
+        <div class="d-flex m justify-content-between">
+            <h4>Agregar Huesped</h4>
+            <p class="mb-0 ml-auto"><a href="@Url.Action("Index")" class="btn btn-close"></a></p>
+        </div>
+        <hr />
+        <form asp-action="AddGuest">
+            <div class="row">
+                <div class="col-4 ">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Apellido" class="control-label"></label>
+                        <input asp-for="Apellido" class="form-control" />
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Genero" class="control-label"></label>
+                        <select asp-for="Genero" class="form-control">
+                            <option value="">Seleccione un género</option>
+                            @foreach (var genero in ViewBag.Generos)
+                            {
+                                <option value="@genero.IdGenero">@genero.Genero1</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Genero" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label asp-for="MotivoEstancia" class="control-label"></label>
+                        <input asp-for="MotivoEstancia" class="form-control" />
+                        <span asp-validation-for="MotivoEstancia" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Telefono" class="control-label"></label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="TelefonoEmergencia" class="control-label"></label>
+                        <input asp-for="TelefonoEmergencia" class="form-control" />
+                        <span asp-validation-for="TelefonoEmergencia" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-4 ">
+
+                  
+                    <div class="form-group mb-2">
+                        <label asp-for="Correo" class="control-label"></label>
+                        <input asp-for="Correo" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="PagoInicial" class="control-label"></label>
+                        <input asp-for="PagoInicial" class="form-control" />
+                        <span asp-validation-for="PagoInicial" class="text-danger"></span>
+                    </div>                   
+                    <div class="form-group mb-2">
+                        <label asp-for="Alacena" class="control-label"></label>
+                        <input asp-for="Alacena" class="form-control" />
+                        <span asp-validation-for="Alacena" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Refrigerador" class="control-label"></label>
+                        <input asp-for="Refrigerador" class="form-control" />
+                        <span asp-validation-for="Refrigerador" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label asp-for="FechaAlta" class="control-label"></label>
+                        <input asp-for="FechaAlta" class="form-control" type="date"/>
+                        <span asp-validation-for="FechaAlta" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label asp-for="FechaSalidaPrev" class="control-label"></label>
+                        <input asp-for="FechaSalidaPrev" class="form-control" type="date" value="" />
+                        <span asp-validation-for="FechaSalidaPrev" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-4">
+                        <input type="submit" value="Crear" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

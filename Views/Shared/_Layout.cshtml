@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AdminRooms</title>
+    <link rel="icon" href="@Url.Content("~/images/house-16.ico")" type="image/x-icon">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/normalizer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Layout/header.css" asp-append-version="true" />
+    <link href="https://cdn.datatables.net/v/bs4/dt-1.13.6/datatables.min.css" rel="stylesheet">
+
+
+    <link rel="icon" href="images/house-16.ico" type="image/x-icon">
+    <link rel="stylesheet" href="~/AdminRooms.styles.css" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/db8f05c257.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <header>
+        <div class="header-fondo border-bottom box-shadow">
+            <div class="container-fluid d-flex align-items-center justify-content-between">
+
+                <div class="d-flex align-items-center">
+                    <button class="navbar-toggler menu-hamburger " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasexample" aria-controls="offcanvasexample"
+                            aria-expanded="false" aria-label="toggle navigation">
+                        <i class="fa-solid fa-bars fa-xl" style="color: #ffffff;"></i>
+                    </button>
+
+                    <i class="fa-solid fa-house fa-sm ml" style="color: #ffffff;"></i>
+                    <a class="nav-link text-white ">Alameda</a>
+                </div>
+
+
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-user fa-sm" style="color: #ffffff;"></i>
+                    <a class="nav-link text-white">User</a>
+                    <i class="fa-solid fa-right-from-bracket fa-sm ml" style="color: #ffffff;"></i>
+                    <a class="nav-link btn-logout" asp-area="" asp-controller="Home" asp-action="LogOut">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasexample" aria-labelledby="offcanvasexamplelabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="close"></button>
+            </div>
+
+
+            @*Menu lateral *@
+            <div class="offcanvas-body">
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-3  d-flex flex-column justify-content-center align-items-center">
+                                <i class="fa-solid fa-user fa-2xl"></i>
+                            </div>
+                            <div class="col-9 ">
+                                <div class="mt-2 text-user">
+                                    <p class="mb-0 fs-5"><strong>Jair Mora</strong></p>
+@*                                  <p class="mb-0 fs-6">Administrador</p>
+ *@                                </div>
+                            </div>
+                        </div>
+                    </li>
+@* 
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-house-flag"></i>
+                            @Html.ActionLink("Residencias", "Index", "Residencias", null, new {@class= "nav-link text-dark"})
+                        </div>
+                    </li> *@
+
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-bed fa-sm"></i>
+                            @Html.ActionLink("Cuartos", "Index", "Cuartos",null, new {@class= "nav-link text-dark"})
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-users fa-sm"></i>
+                            @Html.ActionLink("Huespedes", "Index", "Huesped", null, new {@class= "nav-link text-dark"})
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                            @Html.ActionLink("Finanzas", "Index", "Finanzas", null, new {@class= "nav-link text-dark"})
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.datatables.net/v/bs4/dt-1.13.6/datatables.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/finanzas.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

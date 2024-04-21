@@ -1,0 +1,154 @@
+﻿@model AdminRooms.Models.ViewModel.FacturaViewModel
+
+@{
+    ViewData["Title"] = "Editar Factura";
+}
+
+<style>
+    .correo-link {
+        text-decoration: none; /* Elimina el subrayado estándar de los enlaces */
+        color: blue; /* Cambia el color del texto para que se parezca a un enlace */
+        cursor: pointer; /* Cambia el cursor al pasar sobre el enlace */
+    }
+
+    .wrapper-edit {
+        margin: 60px auto;
+        background-color: rgba(255, 255, 255, 1);
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        max-width: 1000px;
+    }
+
+    .form-edit {
+        padding: 10px 20px 20px 20px;
+        width: 50%;
+    }
+
+    .form-group-edit {
+        margin-bottom: 10px;
+    }
+
+    .input-text-edit {
+        width: 100%;
+    }
+
+    .form-horizontal.login label {
+        font-weight: bold;
+    }
+
+    .mr-check {
+        margin-right: 10px;
+    }
+
+</style>
+
+<body class="fondo">
+    <div class="wrapper-edit">
+        <div class="d-flex m justify-content-between">
+            <h4>Editar Factura</h4>
+            <p class="mb-0 ml-auto"><a href="@Url.Action("Facturas")" class="btn btn-close"></a></p>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-5">
+                <form asp-action="EditFactura">
+                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="IdFactura" />
+                    <input type="hidden" asp-for="idAsignacion" />
+
+                    <div class="form-group mb-2">
+                        <label asp-for="Huesped" class="control-label"></label>
+                        <input asp-for="Huesped" class="form-control" />
+                        <span asp-validation-for="Huesped" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Fecha" class="control-label"></label>
+                        <input asp-for="Fecha" type="date" class="form-control" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Concepto" class="control-label"></label>
+                        <input asp-for="Concepto" class="form-control" />
+                        <span asp-validation-for="Concepto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Monto" class="control-label"></label>
+                        <input asp-for="Monto" class="form-control" />
+                        <span asp-validation-for="Monto" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-2 d-flex justify-content">
+                        <div class="form-check mr-check">
+                            <input asp-for="PagoEfectivo" class="form-check-input" onclick="limitarSeleccion('PagoEfectivo')" />
+                            <label class="form-check-label">Efectivo</label>
+                        </div>
+                        <div class="form-check mr-check">
+                            <input asp-for="PagoTransferencia" class="form-check-input" onclick="limitarSeleccion('PagoTransferencia')" />
+                            <label class="form-check-label">Transferencia</label>
+                        </div>
+                        <div class="form-check mr-check">
+                            <input asp-for="RetiroSinTarjeta" class="form-check-input" onclick="limitarSeleccion('RetiroSinTarjeta')" />
+                            <label class="form-check-label">Retiro Sin Tarjeta</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" name="accion" value="Guardar" class="btn btn-primary" />
+                        <input type="submit" name="accion" value="Guardar y generar factura" class="btn btn-primary" />
+                    </div>
+
+               @*     <div id="correoContainer" class="mb-2">
+                        <label asp-for="Correo" class="control-label">Correo del Huésped:</label>
+                        <a asp-for="Correo" class="correo-link" href="mailto:@Model.Correo">@Model.Correo</a>
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>*@
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Oculta el campo de texto al principio
+        $('#correoContainer').hide();
+
+        // Maneja el clic en el botón
+        $('[name="accion"]').on('click', function () {
+            // Muestra u oculta el campo de texto dependiendo del valor del botón
+            if ($(this).val() === 'Pagar y Factura') {
+                $('#correoContainer').show();
+            } else {
+                $('#correoContainer').hide();
+            }
+        });
+    });
+
+    function limitarSeleccion(checkboxId) {
+        var checkboxes = document.querySelectorAll('.form-check-input');
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.id !== checkboxId) {
+                checkbox.checked = false;
+            }
+        });
+    }
+
+</script>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

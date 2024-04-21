@@ -1,0 +1,458 @@
+﻿@model AdminRooms.Models.ViewModel.GastoViewModel
+
+@functions {
+    public string FormatoFecha(DateTime? fecha)
+    {
+        return fecha?.ToString("dd-MM-yyyy");
+    }
+}
+
+
+<style>
+    .wrapper-opc {
+        margin: 35px 1px 35px 35px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 20px;
+    }
+
+    .wrapper-cuartos {
+        margin: 35px 35px 35px 1px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 20px;
+    }
+
+    .wrapper-opc div a {
+        cursor: pointer;
+    }
+
+    .menu-opc a {
+        color: black !important;
+        text-decoration: none !important;
+        font-size: 18px !important;
+        transition: color 0.3s !important;
+        cursor: pointer;
+    }
+
+    .menu-opc a {
+        color: black;
+        text-decoration: none;
+        position: relative;
+        transition: color 0.3s;
+    }
+
+        /* Animación de la barra de menú */
+        .menu-opc a::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 50%;
+            background-color: #2196f3;
+            transition: all 0.1s;
+            opacity: 0;
+        }
+
+        .menu-opc a.active::before {
+            opacity: 1;
+        }
+
+        .menu-opc a.active {
+            padding-left: 15px;
+        }
+
+    .table-gastos {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        margin: 15px;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #333;
+        color: white;
+    }
+
+    .etiqueta-verde {
+        background-color: #4CAF50;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .etiqueta-roja {
+        background-color: #f44336;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .modal-content-config {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+    .mr-icon {
+        margin-right: 10px;
+    }
+
+</style>
+
+@{
+    ViewData["Title"] = "Gastos";
+}
+
+<body class="fondo">
+
+    <div class="row">
+        <div class="col-2">
+            <div class="wrapper-opc menu-opc">
+                <div class="col-item mt-2">
+                    @Html.ActionLink("Asignaciones", "Index", "Finanzas", null, new {@class= ""})
+                </div>
+                <div class="col-item mt-2">
+                    <a id="opc-finanzas" class="active">Gastos</a>
+                </div>
+                <div class="col-item mt-2">
+                    @Html.ActionLink("Finanzas", "Facturas", "Finanzas", null, new {@class= ""})
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-10">
+            <div class="wrapper-cuartos">
+                <div class="row">
+                    <div>
+
+
+                        <h3>Gastos variables</h3>
+                        <button type="button" class="btn btn-labeled btn-success" data-bs-toggle="modal" data-bs-target="#gastoModal">
+                            <span class="btn-label"><i class="fa-solid fa-file-invoice-dollar mr-icon"></i></span>Registrar
+                        </button>
+                        @using (Html.BeginForm("AddGastoVariable", "Finanzas", FormMethod.Post, new { @class = "custom-form mr-form" }))
+                        {
+
+                            <div class="modal fade" id="gastoModal" tabindex="-1" aria-labelledby="gastoModal" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                    <div class="modal-content-config my-custom-background rounded">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="gastoModal"><strong>Añadir gasto</strong></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body mb-3">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group mb-2">
+                                                <label asp-for="Nombre" class="control-label"></label>
+                                                <input asp-for="Nombre" class="form-control" />
+                                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group mb-2">
+                                                <label asp-for="Monto" class="control-label"></label>
+                                                <input asp-for="Monto" class="form-control" />
+                                                <span asp-validation-for="Monto" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label asp-for="Fecha" class="control-label"></label>
+                                                <input asp-for="Fecha" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                                <span asp-validation-for="Fecha" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                            <button type="submit" class="btn btn-primary mouse">Agregar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <h3>Gastos fijos</h3>
+                        <a href="@Url.Action("AddGastoFijo", "Finanzas", null)" class="btn btn-primary">
+                            <span class="btn-label"><i class="fa-solid fa-circle-plus mr-icon"></i></span>Agregar
+                        </a>
+                        <table class="table-gastos mx-auto">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Monto</th>
+                                    <th>Fecha de cobro </th>
+                                    <th>Pagado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var fijo in ViewBag.Fijos)
+                                {
+                                    var id = fijo.IdGastosFijos;
+
+                                    <tr>
+                                        <td>
+                                            @fijo.Nombre
+                                        </td>
+                                        <td>
+                                            @fijo.Monto
+                                        </td>
+                                        <td>
+                                            @FormatoFecha(fijo.FechaAviso)
+                                        </td>
+
+                                        <td>
+                                            @if (fijo.Pagado == true)
+                                            {
+                                                <span class="etiqueta-verde">Pagado</span>
+
+                                            }
+                                            else
+                                            {
+                                                <span class="etiqueta-roja">No Pagado</span>
+
+                                            }
+                                        </td>
+
+                                        <td>
+
+                                            <button type="button" class="btn btn-labeled btn-success" data-bs-toggle="modal" data-bs-target="#PagarFijoModal-@fijo.IdGastosFijos">
+                                                <span class="btn-label"><i class="fa-solid fa-file-invoice-dollar mr-icon"></i></span>Registrar
+                                            </button>
+                                            <a href="@Url.Action("EditGastoFijo", "Finanzas", new {id = fijo.IdGastosFijos})" class="btn btn-labeled btn-primary mr-form">
+                                                <span class="btn-label"><i class="fa-solid fa-pen-to-square mr-icon"></i></span>Editar
+                                            </a>
+                                            <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFijoModal-@fijo.IdGastosFijos">
+                                                <span class="btn-label"><i class="fa fa-trash mr-icon"></i></span>Eliminar
+                                            </button>
+
+                                            @using (Html.BeginForm("DeleteGasto", "Finanzas", FormMethod.Post, new { @class = "custom-form mr-form" }))
+                                            {
+                                                <div class="modal fade" id="deleteFijoModal-@id" tabindex="-1" aria-labelledby="deleteFijoModal-@id" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                        <div class="modal-content-config my-custom-background rounded">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteFijoModal-@id"><strong>Eliminar gasto fijo</strong></h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body mb-3">
+                                                                <h5>¿Quieres eliminar el gasto <strong>@fijo.Nombre</strong>?</h5>
+                                                                <p>No hay vuelta atras</p>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                <input type="hidden" name="id" value="@id" />
+                                                                <button type="submit" class="btn btn-primary mouse">Eliminar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            @using (Html.BeginForm("AddGastoFijoFinal", "Finanzas", FormMethod.Post, new { @class = "custom-form mr-form" }))
+                                            {
+                                                <div class="modal fade" id="PagarFijoModal-@id" tabindex="-1" aria-labelledby="PagarFijoModal-@id" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                        <div class="modal-content-config my-custom-background rounded">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="PagarFijoModal-@id"><strong>Añadir gasto</strong></h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body mb-3">
+                                                                <h5>¿Quieres registrar el gasto de <strong>@fijo.Nombre</strong>?</h5>
+                                                                <div class="form-group mb-2">
+                                                                    <label asp-for="Fecha" class="control-label"></label>
+                                                                    <input asp-for="Fecha" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                                                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                                                                </div>
+
+                                                                <div class="form-check form-switch mb-2">
+                                                                    <input asp-for="ActivarAviso" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault-@id" checked>
+                                                                    <label asp-for="ActivarAviso" class="form-check-label" for="flexSwitchCheckDefault-@id">Siguiente aviso en un mes</label>
+                                                                </div>
+
+                                                                <div class="form-group" id="fechaAvisoDiv-@id" style="display: none;">
+                                                                    <label asp-for="FechaAviso" class="control-label">Escoger fecha personalizada</label>
+                                                                    <input asp-for="FechaAviso" type="date" class="form-control" />
+                                                                    <span asp-validation-for="FechaAviso" class="text-danger"></span>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                <input type="hidden" name="id" value="@id" />
+                                                                <button type="submit" class="btn btn-primary mouse">Agregar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="row ">
+                    <div>
+                        <h3>Gastos semi-fijos</h3>
+                        <a href="@Url.Action("AddGastoSemiFijo", "Finanzas", null)" class="btn btn-primary">
+                            <span class="btn-label"><i class="fa-solid fa-circle-plus mr-icon"></i></span>Agregar
+                        </a>
+                        <table class="table-gastos mx-auto">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Fecha de ultimo pago</th>
+                                    <th>Ultimo monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var Semi in ViewBag.SemiFijos)
+                                {
+                                    var id = Semi.IdGastosFijos;
+                                    <tr>
+                                        <td>@Semi.Nombre</td>
+                                        <td width="24%">@FormatoFecha(Semi.FechaPagado)</td>
+                                        <td width="24%">@Semi.Monto</td>
+                                        <td width="42%">
+                                            <button type="button" class="btn btn-labeled btn-success" data-bs-toggle="modal" data-bs-target="#PagarSemiModal-@Semi.IdGastosFijos">
+                                                <span class="btn-label"><i class="fa-solid fa-file-invoice-dollar mr-icon"></i></span>Registrar
+                                            </button>
+                                            <a href="@Url.Action("EditGastoSemiFijo", "Finanzas", new {id = Semi.IdGastosFijos})" class="btn btn-labeled btn-primary mr-form">
+                                                <span class="btn-label"><i class="fa-solid fa-pen-to-square mr-icon"></i></span>Editar
+                                            </a>
+                                            <button type="button" class="btn btn-labeled btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSemiModal-@Semi.IdGastosFijos">
+                                                <span class="btn-label"><i class="fa fa-trash mr-icon"></i></span>Eliminar
+                                            </button>
+
+                                            @using (Html.BeginForm("DeleteGasto", "Finanzas", FormMethod.Post, new { @class = "custom-form mr-form" }))
+                                            {
+                                                <div class="modal fade" id="deleteSemiModal-@id" tabindex="-1" aria-labelledby="deleteSemiModal-@id" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                        <div class="modal-content-config my-custom-background rounded">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteSemiModal-@id"><strong>Añadir gasto</strong></h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body mb-3">
+                                                                <h5>¿Quieres eliminar el gasto <strong>@Semi.Nombre</strong>?</h5>
+                                                                <p>No hay vuelta atras</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                <input type="hidden" name="id" value="@id" />
+                                                                <button type="submit" class="btn btn-primary mouse">Eliminar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            @using (Html.BeginForm("AddGastoSemiFijoFinal", "Finanzas", FormMethod.Post, new { @class = "custom-form mr-form" }))
+                                            {
+                                                <div class="modal fade" id="PagarSemiModal-@id" tabindex="-1" aria-labelledby="PagarSemiModal-@id" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-xl d-flex align-items-center justify-content-center">
+                                                        <div class="modal-content-config my-custom-background rounded">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="PagarSemiModal-@id"><strong>Añadir Gasto</strong></h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body mb-3">
+                                                                <div class="form-group mb-2">
+                                                                    <label asp-for="Monto" class="control-label"></label>
+                                                                    <input asp-for="Monto" class="form-control" />
+                                                                    <span asp-validation-for="Monto" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="form-group mb-2">
+                                                                    <label asp-for="Fecha" class="control-label"></label>
+                                                                    <input asp-for="Fecha" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
+                                                                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary mouse" data-bs-dismiss="modal">Descartar</button>
+                                                                    <input type="hidden" name="id" value="@id" />
+                                                                    <button type="submit" class="btn btn-primary mouse">Agregar</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+@{
+    
+    //Esto se crea con el fin que se pueda crear multiples swictch case en el js 
+    List<int> ids = new List<int>();
+
+    foreach (var fijo in ViewBag.Fijos)
+    {
+        ids.Add(fijo.IdGastosFijos);
+    }
+     int[] idsArray = ids.ToArray();
+
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Iterar sobre la lista de IDs en JavaScript
+        var ids = @Html.Raw(Json.Serialize(ids));
+
+        ids.forEach(function (id) {
+            var switchElement = document.getElementById('flexSwitchCheckDefault-' + id);
+            var fechaAvisoDiv = document.getElementById('fechaAvisoDiv-' + id);
+
+            switchElement.addEventListener('change', function () {
+                fechaAvisoDiv.style.display = switchElement.checked ? 'none' : 'block';
+            });
+
+            if (switchElement.checked) {
+                fechaAvisoDiv.style.display = 'none';
+            }
+        });
+    });
+</script>
