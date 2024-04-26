@@ -3,7 +3,7 @@ using AdminRooms.Models.ViewModel;
 using AdminRooms.Services.Interfaz;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+//prueba travis-ci
 namespace AdminRooms.Controllers
 {
     [Authorize]
