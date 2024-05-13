@@ -55,32 +55,47 @@ Como mencione antes saltare algunos pasos de instalacion omitiendo alguno de ell
 ## Ambiente de Desarrollo
 
 1. Crear una carpeta en *archivos* de la computadora donde quieras alojar el proyecto ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/09e54dd4-351c-45c6-a41b-91bac9578a85)
+2. En esa ubicacion de la carpeta creada, abre el CMD para ejecutar comandos ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/7f1fbdf7-2d97-4c08-92a0-7468ac4a9c49)
 
-2. En esa ubicacion de la carpeta creada, abre el CMD para ejecutar comandos 
-3. Ejecuta el siguiente comando *git clone https://github.com/JairMora21/AdminRoomsProyect.git*
-4. Se instalara el proyecto en nuestra carpeta creada 
-5. Abrir el archivo el archivo con terminacion .SLN (Prerequisito: tener visual studio 2022 instalado con version minima de .NET 6)
-6. Instalar SQL Server
+3. Ejecuta el siguiente comando *git clone https://github.com/JairMora21/AdminRoomsProyect.git* ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/d6b388a4-1306-4bb2-b342-c252100c328c)
+
+4. Se instalara el proyecto en nuestra carpeta creada ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/80661a3b-c1ec-4d1e-9373-100cc2295b5d)
+
+5. Abrir el archivo el archivo con terminacion .SLN (Prerequisito: tener visual studio 2022 instalado con version minima de .NET 6) ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/b7442571-32b7-4440-8083-900dadfd7c47)
+
+6. Instalar SQL Server ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/db3de9fd-6480-4b9c-bb90-991f4130b3ed)
+
 7. Correr este *script* para genenar una base de datos (Script omitido por confidencialidad)
-8. En el archivo *appsettings.json* modificar la cadena de conexion ConnectionString > SQL  ***"Data Source=Nombre_tu_Pc; Initial Catalog=Nombre_Tu_Bd; Integrated Security=True; Connect Timeout=30; Encrypt=False; TrustServerCertificate=False; ApplicationIntent=ReadWrite; MultisubnetFailOver=False"***
+8. En el archivo *appsettings.json* modificar la cadena de conexion ConnectionString > SQL  ***"Data Source=Nombre_tu_Pc; Initial Catalog=Nombre_Tu_Bd; Integrated Security=True; Connect Timeout=30; Encrypt=False; TrustServerCertificate=False; ApplicationIntent=ReadWrite; MultisubnetFailOver=False"*** ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/cf8dc77b-930e-4ddb-902a-e3eca50f6671)
+
 9. Instalar los siguientes paquetes nuggets en visual studio 
 - EntityFramework.tools
-- EntityFramework.SQL
+- EntityFramework.SQL ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/f76e7dbe-1180-4c5e-860e-bcffd8b36cf3)
+
 10. Correr el proyecto
 
 ## Ejecutar Pruebas
 Para ejecutar las pruebas del proyecto es necesario seguir los pasos de instalacion y posteriormente realizar las pruebas dentro de la aplicacion 
 
 ## Implementación en Producción
-1. En Visual Studio 2022 dar click en el boton de publicar 
-2. Escoger un perfil y elegir la opcion de *carpeta*
-3. Elegir la ruta donde se publicara la apicacion 
-4. Darle click a publicar 
-5. Abrir la aplicacion IIS en nuestro dispositivo
-6. Agregar un nuevo sitio web
-7. Seleccionar la carpeta del sitio web y el puerto donde se publicara 
-8. Dar permisos necesarios a la carpeta 
-9. Abrir la pagina 
+1. En Visual Studio 2022 dar click en el boton de publicar ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/0c711df6-cca6-4713-a423-9bcea1a74405)
+
+2. Escoger un perfil y elegir la opcion de *carpeta* ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/5060a828-bb0f-44be-825f-ddd18476da20)
+
+3. Elegir la ruta donde se publicara la apicacion ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/829b2031-69f0-4eca-9f3e-994a87d6ea07)
+
+4. Darle click a publicar ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/bf4d2ee4-c378-4284-899c-8054fa6cf17b)
+
+5. Abrir la aplicacion IIS en nuestro dispositivo ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/8e5b36ea-f1c4-4eb7-b6e5-721c9b32724c)
+
+6. Agregar un nuevo sitio web ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/70ddd311-a880-4458-b81f-8beda433faea)
+
+7. Seleccionar la carpeta del sitio web y el puerto donde se publicara ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/16b8808b-a42c-41f5-91db-f00e84e13c5f)
+
+8. Dar permisos necesarios a la carpeta S![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/e0253345-9fb7-43e8-9f4c-fe5af5d09330)
+
+9. Abrir la pagina ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/378dfa15-aa28-4741-86ea-50d2731602ac)
+
 
 # Configuración
 ## Configuración del Producto
@@ -97,7 +112,7 @@ Instrucciones adicionales de configuración.
 ## Módulo de Login
 
 ### Iniciar Sesión
-
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/6c553808-69ae-413e-8fce-9705cdc02121)
 Para iniciar sesión en la aplicación, sigue estos sencillos pasos:
 
 1. **Abrir la Página de Inicio de Sesión:**
@@ -114,8 +129,11 @@ Para iniciar sesión en la aplicación, sigue estos sencillos pasos:
 
 ## Pagina principal 
 Para ver todos los modulos de la aplicacion debera hacer click en las 3 barras para desplegar el navbar, en este podra ver reflejado los modulos de la aplicacion las cuales seran  
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/02904272-6726-4707-9ec2-c2cf3d456771)
 
 ## Modulo Huespedes 
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/2ee685a4-990f-4bf5-a0f8-b9d620df021c)
+
 ### Descripción General
 
 El módulo de Huéspedes en nuestra aplicación permite gestionar toda la información relacionada con los huéspedes de manera eficiente y efectiva. Con este módulo, puedes crear nuevos registros de huéspedes, ver detalles de huéspedes existentes, actualizar su información o eliminar registros que ya no sean necesarios.
@@ -165,6 +183,7 @@ El módulo de Huéspedes en nuestra aplicación permite gestionar toda la inform
    ---------
 
 ## Módulo de Cuartos
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/6b439cb0-333a-4f96-b139-40162ea042f7)
 
 ### Descripción General
 
@@ -213,6 +232,7 @@ El módulo de Cuartos en nuestra aplicación es un sistema integral para la gest
 El módulo de Finanzas en nuestra aplicación está diseñado para gestionar de manera integral los aspectos financieros del negocio. Este módulo se divide en tres submódulos principales: Asignaciones, Gastos y Finanzas, cada uno con funcionalidades específicas para facilitar la administración efectiva de los recursos económicos.
 
 ### Submódulo de Asignaciones
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/dab3e3ac-5a00-4767-87ba-ec429b0360ea)
 
 ### Visualización de Asignaciones
 
@@ -240,6 +260,7 @@ El módulo de Finanzas en nuestra aplicación está diseñado para gestionar de 
 Estas funcionalidades aseguran una gestión eficiente de los pagos y asignaciones, facilitando el seguimiento y la actualización de los estados financieros de los clientes y las propiedades.
 
 ### Submódulo de Gastos
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/525a42ba-22f5-4c65-a64d-790c4cecb511)
 
 ### Descripción General
 
@@ -274,6 +295,7 @@ El submódulo de Gastos está diseñado para gestionar todos los gastos asociado
    - Al registrar un pago, especifica el monto pagado y confirma el registro del pago.
 
 ### Submódulo de Finanzas
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/a1712be7-219f-452a-a7b3-9614b023ad8a)
 
 ### Descripción General
 
