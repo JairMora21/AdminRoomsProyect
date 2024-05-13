@@ -54,9 +54,10 @@ Como mencione antes saltare algunos pasos de instalacion omitiendo alguno de ell
 
 ## Ambiente de Desarrollo
 
-1. Crear una carpeta en *archivos* de la computadora donde quieras alojar el proyecto
+1. Crear una carpeta en *archivos* de la computadora donde quieras alojar el proyecto ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/09e54dd4-351c-45c6-a41b-91bac9578a85)
+
 2. En esa ubicacion de la carpeta creada, abre el CMD para ejecutar comandos 
-3. Ejecuta el siguiente comando https://github.com/JairMora21/AdminRoomsProyect.git 
+3. Ejecuta el siguiente comando *git clone https://github.com/JairMora21/AdminRoomsProyect.git*
 4. Se instalara el proyecto en nuestra carpeta creada 
 5. Abrir el archivo el archivo con terminacion .SLN (Prerequisito: tener visual studio 2022 instalado con version minima de .NET 6)
 6. Instalar SQL Server
