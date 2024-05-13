@@ -11,7 +11,7 @@
 - [Roadmap](#roadmap)
 
 # Descripción
-El proyecto tiene como objetivo desarrollar una aplicación llamada Admin Rooms, que se encuentra actualmente en la fase inicial. Esta aplicación, diseñada para arrendadores que gestionan múltiples propiedades o habitaciones, aspira a ofrecer un control preciso de las finanzas e inmuebles de los arrendadores. En su estado actual, Admin Rooms está planeada para incluir funcionalidades como la futura capacidad de registrar datos de clientes, realizar un seguimiento de los pagos, generar recibos digitales en formato PDF y permitirá realizar análisis detallados de ingresos y egresos mediante gráficas.
+Si eres arrendador, gestionas múltiples propiedades/cuartos y buscas llevar un control preciso de tus finanzas e inmuebles, Admin Rooms es la aplicación perfecta para ti. Con Admin Rooms, puedes registrar los datos de tus clientes, hacer un seguimiento de los pagos, generar recibos digitales en formato PDF y realizar análisis detallados de tus ingresos y egresos a través de gráficas..
 
 **¿Cual fue el problema identificado y la solucion?**
 
@@ -22,7 +22,7 @@ El problema que se identifico fue la capacidad de poca gestion sin una plataform
 
 - ## ASP.NET
 Esta app fue desarollada en C# con una arquitectura MVC, se implemento la inyeccion de dependencias, librerias externas y el uso de interfaces para mejorar la modularidad y mantenibilidad del codigo. Este enfoque permite escalabilidad y flexibilidad en el proyecto a futuro
-
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/23404b4a-33f4-4cd6-bbdd-0c9984dddf3d)
 
 
 # Requerimientos
@@ -31,6 +31,7 @@ Esta app fue desarollada en C# con una arquitectura MVC, se implemento la inyecc
 - **Azure**
 
     Opté por Azure como la solución para almacenar de forma segura los datos de la aplicación en la nube. Contraté un servidor en la plataforma para gestionar y almacenar eficientemente la información
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/a421209a-b541-48f5-b6ee-fa2d2ac5c8c7)
 
 ### Web
 - **IIS**
@@ -41,8 +42,12 @@ Esta app fue desarollada en C# con una arquitectura MVC, se implemento la inyecc
 - **SQL Server**
 
     Utilice SQL Server para desarrollar una base de datos solida y eficaz. Implementé constrains adecuados para prevenir posibles errores en la integridad de los datos.
+
+  ![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/284af75c-47d8-4272-af49-f52ca06f2d73)
+
 # Paquetes adicionales
 Para habilitar la generación de PDFs y la visualización de gráficos en la aplicación, se incorporaron dos librerías esenciales: **Rotativa** para la generación de PDFs y **Chart.js** para la creación de gráficos. Estas herramientas desempeñan un papel fundamental en el funcionamiento integral del sistema
+![image](https://github.com/JairMora21/AdminRoomsProyect/assets/99458033/7227744f-12de-4d87-9515-11ce7a6da077)
 
 # Versión de C#
  .NET 6
